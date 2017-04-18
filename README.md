@@ -1,2 +1,5 @@
 # Kenai
-Litghtweight Rest Service 
+
+-Active Record Classes for BD Interaction
+
+\#PHP4life Dawg! 
