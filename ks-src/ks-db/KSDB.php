@@ -19,7 +19,7 @@ use PDO;
 
 abstract class KSDB extends KSCore
 {
-    public static function pdo():\PDO
+    protected static function pdo():\PDO
     {
         return new PDO("mysql:".HOST.";dbname=".DB, DB_USER, DB_PW);
     }

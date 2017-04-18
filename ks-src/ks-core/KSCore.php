@@ -14,15 +14,21 @@ namespace KS\Core;
 
 use const KS\Config\DEBUG_MODE;
 
-class KSCore
+abstract class KSCore
 {
     function __construct()
     {
         //...
     }
 
-    static public function is_debug_on()
+    static protected function is_debug_on():bool
     {
         return DEBUG_MODE;
+    }
+
+    static protected function UUID():string
+    {
+        //return com_create_guid();
+        return substr(com_create_guid(), 1, -1);
     }
 }
