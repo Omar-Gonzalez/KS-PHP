@@ -33,8 +33,16 @@ class KSModel extends KSDB
         $this->table_name = null;
     }
 
-    private function validate_table(){
-
+    private function validate_table()
+    {
+        if ($this->table_name == "ksmodels")
+        {
+            if($this::is_debug_on())
+            {
+                echo "<br>KS:Table trying to create a table out of the wrong instance<br>";
+            }
+            return;
+        }
         $dbh = $this::pdo();
         $existing_table = gettype($dbh->exec("SELECT count(*) FROM $this->table_name")) == 'integer';
         $columns = "";
@@ -43,15 +51,14 @@ class KSModel extends KSDB
         {
             if($this::is_debug_on())
             {
-                echo "Table ".$this->table_name." was already created";
+                echo "<br>KS:Table ".$this->table_name." was already created<br>";
             }
             return;
         }
 
         if($this::is_debug_on())
         {
-            echo "Table ".$this->table_name." was is not yet created, trying to create";
-            echo"<br>";
+            echo "<br>KS Table ".$this->table_name." is not yet created, trying to create<br>";
         }
 
         foreach ($this->properties as $key => $value)
@@ -90,22 +97,17 @@ class KSModel extends KSDB
                     PRIMARY KEY (id)
                 )";
 
-        if($this::is_debug_on())
-        {
-            echo $sql;
-        }
-
         try {
             $result = $dbh->query($sql);
             if($this::is_debug_on())
             {
-                echo var_dump($result);
+                echo "<br>KS:Table ".$this->table_name." was created<br>".var_dump($result);
             }
         } catch(PDOExecption $e) {
             $dbh->rollback();
             if(self::is_debug_on())
             {
-                print "Error!: " . $e->getMessage() . "</br>";
+                echo "<br>KS:Error!: " . $e->getMessage() . "</br>";
             }
         }
     }
@@ -139,11 +141,6 @@ class KSModel extends KSDB
 	    )
         ";
 
-        if(self::is_debug_on())
-        {
-            echo "<br>".$sql."<br>";
-        }
-
         $dbh = $this::pdo();
 
         try {
@@ -156,7 +153,7 @@ class KSModel extends KSDB
             $dbh->rollback();
             if(self::is_debug_on())
             {
-                print "Error!: " . $e->getMessage() . "</br>";
+                echo "<br>Error!: " . $e->getMessage() . "</br>";
             }
         }
     }
@@ -166,16 +163,46 @@ class KSModel extends KSDB
 
     }
 
-    public static function delete()
+    public static function delete(int $id):bool
     {
+        $table_name = self::parse_table_name(get_called_class());
+        $dbh = self::pdo();
 
+        try {
+            $stmt = $dbh->prepare("DELETE FROM ".$table_name." WHERE id=:id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+            $affected_rows = $stmt->rowCount();
+            if ($affected_rows == 1)
+            {
+                if(self::is_debug_on())
+                {
+                    echo "<br>KS:SQL row with id: ".$id." was deleted<br>";
+                }
+                return true;
+            }
+            else
+            {
+                if(self::is_debug_on())
+                {
+                 echo "<br>KS:SQL Error unable to delete row with id:".$id."<br>";
+                }
+                return false;
+            }
 
+        } catch(PDOExecption $e) {
+            $dbh->rollback();
+            if(self::is_debug_on())
+            {
+                echo "<br>Error!: " . $e->getMessage() . "</br>";
+                return false;
+            }
+        }
     }
 
     public static function find(int $id)
     {
         $table_name = self::parse_table_name(get_called_class());
-        echo $table_name;
 
         $dbh = self::pdo();
         $sql = "SELECT * FROM ".$table_name." WHERE id=".$id;
@@ -193,7 +220,7 @@ class KSModel extends KSDB
             $dbh->rollback();
             if(self::is_debug_on())
             {
-                print "Error!: " . $e->getMessage() . "</br>";
+                echo "<br>Error!: " . $e->getMessage() . "</br>";
             }
         }
     }

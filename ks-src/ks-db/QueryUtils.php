@@ -11,8 +11,10 @@ namespace KS\DB\QU;
 
 interface QueryUtils
 {
-    public function json();
     public function get();
+    public function json();
     public function array();
     public function object();
+
+    public function error_handler($results);
 }

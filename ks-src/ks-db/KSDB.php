@@ -52,48 +52,41 @@ abstract class KSDB extends KSCore implements QueryUtils
 
     public function json()
     {
-        if (count(self::$results) >= 1)
-        {
-            return json_encode(self::$results[0]);
-        }
-        else
-        {
-            return self::$results;
-        }
+        return $this->error_handler(self::$results);
     }
 
     public function get()
     {
-        if (count(self::$results) >= 1)
-        {
-            return self::$results[0];
-        }
-        else
-        {
-            return self::$results;
-        }
+        return $this->error_handler(self::$results);
     }
 
     public function array()
     {
-        if (count(self::$results) >= 1)
-        {
-            return self::$results[0];
-        }
-        else
-        {
-            return self::$results;
-        }
+        return $this->error_handler(self::$results);
     }
+
     public function object()
     {
-        if (count(self::$results) >= 1)
+        return $this->error_handler(self::$results);
+    }
+
+    public function error_handler($results)
+    {
+        if(count($results)==0)
         {
-            return (object)self::$results[0];
+            if (self::is_debug_on())
+            {
+                echo "<br>KS:Query yield no results Count:0<br>";
+            }
+            return;
+        }
+        if (count($results) >= 1)
+        {
+            return $results[0];
         }
         else
         {
-            return (object)self::$results;
+            return $results;
         }
     }
 }

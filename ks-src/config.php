@@ -15,7 +15,7 @@ namespace KS\Config;
  **-----------------------------------------------------*/
 
 //Core Config
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 const TIME_ZONE = "America/Mexico_City";
 //PDO Config
 const HOST = "host=127.0.0.1:8889";
