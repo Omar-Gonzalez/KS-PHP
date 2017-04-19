@@ -12,8 +12,9 @@ namespace KS\Model;
 require __DIR__ . "../../ks-db/KSDB.php";
 
 use KS\DB\KSDB;
+use PDO;
 
-abstract class KSModel extends KSDB
+class KSModel extends KSDB
 {
     private $properties = [];
     private $table_name;
@@ -21,8 +22,9 @@ abstract class KSModel extends KSDB
     function __construct()
     {
         $this->properties = get_object_vars($this);
-        $this->table_name = basename(str_replace('\\', '/', get_class($this)))."s";
+        $this->table_name = self::parse_table_name(get_class($this));
         $this->validate_table();
+        self::set_timezone();
     }
 
     function __destruct()
@@ -73,7 +75,7 @@ abstract class KSModel extends KSDB
                 $colum_type = "TEXT";
             }
 
-            if ($key == "properties" || $key == "table_name"){
+            if ($key == "properties" || $key == "table_name" || $key == "results"){
                 continue;
             }
 
@@ -81,11 +83,11 @@ abstract class KSModel extends KSDB
         }
 
         $sql = "CREATE TABLE ".$this->table_name." (
-                    uuid varchar(36) NOT NULL,
+                    id INTEGER NOT NULL AUTO_INCREMENT,
                     ".$columns."
                     created_at TIMESTAMP DEFAULT NOW(),
                     updated_at TIMESTAMP DEFAULT NOW(),
-                    PRIMARY KEY (uuid)
+                    PRIMARY KEY (id)
                 )";
 
         if($this::is_debug_on())
@@ -115,7 +117,7 @@ abstract class KSModel extends KSDB
         $keys = "";
         $values = "";
         foreach ($this->properties as $key => $value) {
-            if ($key == "properties" || $key == "table_name"){
+            if ($key == "properties" || $key == "table_name" || $key == "results"){
                 continue;
             }
 
@@ -125,17 +127,15 @@ abstract class KSModel extends KSDB
 
         $sql = "
         INSERT INTO  ks.".$this->table_name." (
-            uuid,
             ".$keys." 
             created_at, 
             updated_at
         ) 
         VALUES 
 	    (
-            '".self::UUID()."', 
             ".$values."
-            '2017-04-17 00:00:00', 
-            '2017-04-17 00:00:00'
+            '".date('Y-m-d h:i:sa')."', 
+            '".date('Y-m-d h:i:sa')."'
 	    )
         ";
 
@@ -166,9 +166,35 @@ abstract class KSModel extends KSDB
 
     }
 
-    public function delete()
+    public static function delete()
     {
 
+
+    }
+
+    public static function find(int $id)
+    {
+        $table_name = self::parse_table_name(get_called_class());
+        echo $table_name;
+
+        $dbh = self::pdo();
+        $sql = "SELECT * FROM ".$table_name." WHERE id=".$id;
+
+        try {
+            $stmt = $dbh->query($sql);
+            self::$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(self::is_debug_on())
+            {
+                var_dump(self::$results);
+            }
+            return new self;
+
+        } catch(PDOExecption $e) {
+            $dbh->rollback();
+            if(self::is_debug_on())
+            {
+                print "Error!: " . $e->getMessage() . "</br>";
+            }
+        }
     }
 }
-
