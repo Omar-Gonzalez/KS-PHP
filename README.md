@@ -1,15 +1,15 @@
 # KS PHP
 
-##What is this?
+## What is this?
 
 - A small PHP library I wrote for my freelance work
 
-##Prerequisites 
+## Prerequisites 
 
 - PHP7
 - strict types enabled
 
-##Config
+## Config
 
 - Fill Config.php
 
@@ -20,9 +20,9 @@
       const DB_USER = "root";
       const DB_PW = "1111";
 
-##Classes 
+## Classes 
 
-####Active Record Classes for BD Interaction
+#### Active Record Classes for BD Interaction
 
 1-Extend a new model from KSModel 
 
