@@ -75,6 +75,9 @@ abstract class KSDB extends KSCore implements QueryUtils
         }
     }
 
+    /**-----------------------------------------------------*
+     * - PDO Execute SQL
+     **-----------------------------------------------------*/
     protected static function execute_sql($sql):bool
     {
         $dbh = self::pdo();

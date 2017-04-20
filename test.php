@@ -18,3 +18,7 @@ $c->hair_count = 1111;
 $c->is_fat = true;
 $c->update(445);
 
+
+echo var_dump($_SERVER);
+
+echo"<br>";

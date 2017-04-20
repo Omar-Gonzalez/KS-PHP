@@ -13,10 +13,9 @@ require __DIR__ . '/ks-model\KSModel.php';
 
 class Cat extends KSModel
 {
-    public $name = "string";
-    public $age = 1;
-    public $hair_count = 1.0;
-    public $is_fat = false;
+    public $name = "string"; //string
+    public $age = 1; //integer
+    public $is_fat = true; //boolean
 }
 
 class Dog extends KSModel
