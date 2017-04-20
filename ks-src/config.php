@@ -11,14 +11,14 @@ declare(strict_types = 1);
 namespace KS\Config;
 
 /**-----------------------------------------------------*
- * - Define your App Configuration + PDO Settings
+ * KS Config - Core Config
  **-----------------------------------------------------*/
-
-//Core Config
 const DEBUG_MODE = true;
 const TIME_ZONE = "America/Mexico_City";
-//PDO Config
+/**-----------------------------------------------------*
+ * KS Config - PDO Config
+ **-----------------------------------------------------*/
 const HOST = "host=127.0.0.1:8889";
 const DB = "KS";
 const DB_USER = "root";
-const DB_PW = "2222";
+const DB_PW = "1111";

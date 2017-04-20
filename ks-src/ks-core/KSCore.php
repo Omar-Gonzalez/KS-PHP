@@ -10,7 +10,24 @@ declare(strict_types = 1);
 
 namespace KS\Core;
 
+/**-----------------------------------------------------*
+ * - Library Scripts
+ **-----------------------------------------------------*/
+require __DIR__ . "../../config.php";
+require __DIR__ . "../KSLog.php";
+require __DIR__ . "../../ks-db/QueryUtils.php";
+
+/**-----------------------------------------------------*
+ * - Name Space Declarations
+ **-----------------------------------------------------*/
+
 use const KS\Config\{DEBUG_MODE,TIME_ZONE};
+use KS\Core\Log\KSLog;
+
+/**
+ * Class KSCore
+ * @package KS\Core
+ */
 
 abstract class KSCore
 {
@@ -24,14 +41,15 @@ abstract class KSCore
         date_default_timezone_set(TIME_ZONE);
     }
 
-    static protected function is_debug_on():bool
-    {
-        return DEBUG_MODE;
+    static protected function log(string $log){
+        if (DEBUG_MODE)
+        {
+            echo $log;
+        }
     }
 
     static protected function UUID():string
     {
-        //return com_create_guid();
         return substr(com_create_guid(), 1, -1);
     }
 

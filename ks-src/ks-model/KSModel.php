@@ -11,8 +11,18 @@ namespace KS\Model;
 
 require __DIR__ . "../../ks-db/KSDB.php";
 
+/**-----------------------------------------------------*
+ * - Name Space Definitions
+ **-----------------------------------------------------*/
+
+use KS\Core\Log\KSLog;
 use KS\DB\KSDB;
 use PDO;
+
+/**
+ * Class KSModel
+ * @package KS\Model
+ */
 
 class KSModel extends KSDB
 {
@@ -29,36 +39,48 @@ class KSModel extends KSDB
 
     function __destruct()
     {
-        $this->properties = null;
+        $this->properties = [];
         $this->table_name = null;
     }
 
+    /**-----------------------------------------------------*
+     * - Query Builders
+     **-----------------------------------------------------*/
+    private function sort_key_val()
+    {
+        $keys = "";
+        $values = "";
+
+        foreach ($this->properties as $key => $value) {
+            if ($key == "properties" || $key == "table_name" || $key == "results"){
+                continue;
+            }
+
+            $keys .= $key.", ";
+            $values .= "'".$value."', ";
+        }
+
+        return ['keys' => $keys, 'values' => $values];
+    }
+
+    /**-----------------------------------------------------*
+     * - Validate Table - Wil check if table exist if not
+     *   Creates a new one
+     **-----------------------------------------------------*/
     private function validate_table()
     {
         if ($this->table_name == "ksmodels")
         {
-            if($this::is_debug_on())
-            {
-                echo "<br>KS:Table trying to create a table out of the wrong instance<br>";
-            }
             return;
         }
+
         $dbh = $this::pdo();
         $existing_table = gettype($dbh->exec("SELECT count(*) FROM $this->table_name")) == 'integer';
         $columns = "";
 
         if($existing_table == 1)
         {
-            if($this::is_debug_on())
-            {
-                echo "<br>KS:Table ".$this->table_name." was already created<br>";
-            }
             return;
-        }
-
-        if($this::is_debug_on())
-        {
-            echo "<br>KS Table ".$this->table_name." is not yet created, trying to create<br>";
         }
 
         foreach ($this->properties as $key => $value)
@@ -97,131 +119,105 @@ class KSModel extends KSDB
                     PRIMARY KEY (id)
                 )";
 
-        try {
-            $result = $dbh->query($sql);
-            if($this::is_debug_on())
-            {
-                echo "<br>KS:Table ".$this->table_name." was created<br>".var_dump($result);
-            }
-        } catch(PDOExecption $e) {
-            $dbh->rollback();
-            if(self::is_debug_on())
-            {
-                echo "<br>KS:Error!: " . $e->getMessage() . "</br>";
-            }
-        }
+        $this->execute_sql($sql);
+        self::log(KSLog::OK_NEW_TABLE);
     }
 
+    /**-----------------------------------------------------*
+     * - Save new row with new instance of KSModel
+     **-----------------------------------------------------*/
     public function save()
     {
         $this->__construct();
 
-        $keys = "";
-        $values = "";
-        foreach ($this->properties as $key => $value) {
-            if ($key == "properties" || $key == "table_name" || $key == "results"){
-                continue;
-            }
-
-            $keys .= $key.", ";
-            $values .= "'".$value."', ";
-        }
-
         $sql = "
         INSERT INTO  ks.".$this->table_name." (
-            ".$keys." 
+            ".$this->sort_key_val()['keys']." 
             created_at, 
             updated_at
         ) 
         VALUES 
 	    (
-            ".$values."
+            ".$this->sort_key_val()['values']."
             '".date('Y-m-d h:i:sa')."', 
             '".date('Y-m-d h:i:sa')."'
 	    )
         ";
 
-        $dbh = $this::pdo();
-
-        try {
-            $result = $dbh->query($sql);
-            if($this::is_debug_on())
-            {
-                echo var_dump($result);
-            }
-        } catch(PDOExecption $e) {
-            $dbh->rollback();
-            if(self::is_debug_on())
-            {
-                echo "<br>Error!: " . $e->getMessage() . "</br>";
-            }
+        if($this->execute_sql($sql))
+        {
+            self::log(KSLog::OK_NEW_ROW);
+        }else{
+            self::log(KSLog::F_PDO_OPERATION);
         }
     }
 
-    public function update()
+    public function update($id)
     {
+        $this->__construct();
 
+        $key_values = "";
+        foreach ($this->properties as $key => $value) {
+            if ($key == "properties" || $key == "table_name" || $key == "results"){
+                continue;
+            }
+            $key_values .= "`".$key."` = '".$value."',";
+        }
+
+        $sql = "
+        UPDATE 
+            `ks`.`".$this->table_name."` 
+        SET 
+            ".$key_values."
+            `updated_at` = '".date('Y-m-d h:i:sa')."' 
+        WHERE 
+            `cats`.`id` = ".$id;
+
+        if(self::execute_sql($sql))
+        {
+            self::log(KSLog::OK_UPDATED_ROW);
+            return true;
+        }else{
+            self::log(KSLog::F_PDO_OPERATION);
+            return false;
+        }
     }
 
+    /**-----------------------------------------------------*
+     * - Deletes existing row with id
+     **-----------------------------------------------------*/
     public static function delete(int $id):bool
     {
         $table_name = self::parse_table_name(get_called_class());
-        $dbh = self::pdo();
-
-        try {
-            $stmt = $dbh->prepare("DELETE FROM ".$table_name." WHERE id=:id");
-            $stmt->bindValue(':id', $id, PDO::PARAM_STR);
-            $stmt->execute();
-            $affected_rows = $stmt->rowCount();
-            if ($affected_rows == 1)
-            {
-                if(self::is_debug_on())
-                {
-                    echo "<br>KS:SQL row with id: ".$id." was deleted<br>";
-                }
-                return true;
-            }
-            else
-            {
-                if(self::is_debug_on())
-                {
-                 echo "<br>KS:SQL Error unable to delete row with id:".$id."<br>";
-                }
-                return false;
-            }
-
-        } catch(PDOExecption $e) {
-            $dbh->rollback();
-            if(self::is_debug_on())
-            {
-                echo "<br>Error!: " . $e->getMessage() . "</br>";
-                return false;
-            }
+        $sql = "DELETE FROM `ks`.`".$table_name."` WHERE `".$table_name."`.`id` = ".$id;
+        if(self::execute_sql($sql))
+        {
+            self::log(KSLog::OK_DEL_ROW);
+            return true;
+        }else{
+            self::log(KSLog::F_PDO_OPERATION);
+            return false;
         }
     }
 
+    /**-----------------------------------------------------*
+     * - Find row with ID returns new instance -> For chained
+     *   KSDB method
+     **-----------------------------------------------------*/
     public static function find(int $id)
     {
         $table_name = self::parse_table_name(get_called_class());
-
         $dbh = self::pdo();
         $sql = "SELECT * FROM ".$table_name." WHERE id=".$id;
 
         try {
             $stmt = $dbh->query($sql);
             self::$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if(self::is_debug_on())
-            {
-                var_dump(self::$results);
-            }
             return new self;
 
         } catch(PDOExecption $e) {
             $dbh->rollback();
-            if(self::is_debug_on())
-            {
-                echo "<br>Error!: " . $e->getMessage() . "</br>";
-            }
+            echo "<br>PDOException : " . $e->getMessage() . "</br>";
         }
     }
 }

@@ -42,3 +42,13 @@ class Computer extends KSModel
 {
     public $cpu = "string";
 }
+
+class Job extends KSModel
+{
+    public $salary = 0;
+}
+
+class House extends KSModel
+{
+    public $location = "string";
+}

@@ -7,18 +7,14 @@
  */
 declare(strict_types = 1);
 
-namespace KS\Config;
 namespace KS\Model;
 
 require __DIR__ . '/ks-src/models.php';
 
+$c = new Cat();
+$c->name = "Odin";
+$c->age = 100;
+$c->hair_count = 1111;
+$c->is_fat = true;
+$c->update(445);
 
-$yoko = new Cat();
-$yoko->name = "Yoko";
-$yoko->age = 1;
-$yoko->hair_count = 36364874;
-$yoko->is_fat = true;
-$yoko->save();
-
-Cat::find(3);
-Cat::delete(5);

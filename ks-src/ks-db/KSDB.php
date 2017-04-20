@@ -10,49 +10,42 @@ declare(strict_types = 1);
 
 namespace KS\DB;
 
-require __DIR__ . "../../config.php";
 require __DIR__ . "../../ks-core/KSCore.php";
-require __DIR__ . "../QueryUtils.php";
+
+/**-----------------------------------------------------*
+ * - Name Space Definitions
+ **-----------------------------------------------------*/
 
 use const KS\Config\{DB_USER,DB_PW,HOST,DB};
 use KS\Core\KSCore;
+use KS\Core\Log\KSLog;
 use KS\DB\QU\QueryUtils;
+//use KS\Model\KSModel;
 use PDO;
+
+/**
+ * Class KSDB
+ * @package KS\DB
+ */
 
 abstract class KSDB extends KSCore implements QueryUtils
 {
     public static $results;
 
+    /**-----------------------------------------------------*
+     * - Returns new instance of PDO
+     **-----------------------------------------------------*/
     protected static function pdo():\PDO
     {
         return new PDO("mysql:".HOST.";dbname=".DB, DB_USER, DB_PW);
     }
 
-    public static function get_all_from_table(string $table)
-    {
-        $dbh = self::pdo();
-        $sth = $dbh->prepare("SELECT * FROM ".$table);
-
-        try {
-            $sth->execute();
-            $result = $sth->fetchAll();
-            if(self::is_debug_on())
-            {
-                print_r(var_dump($result));
-            }
-            return $result;
-        } catch(PDOExecption $e) {
-            $dbh->rollback();
-            if(self::is_debug_on())
-            {
-                print "Error!: " . $e->getMessage() . "</br>";
-            }
-        }
-    }
-
+    /**-----------------------------------------------------*
+     * - Query Utils Interface -> Chained Methods
+     **-----------------------------------------------------*/
     public function json()
     {
-        return $this->error_handler(self::$results);
+        return json_encode($this->error_handler(self::$results));
     }
 
     public function get()
@@ -67,26 +60,37 @@ abstract class KSDB extends KSCore implements QueryUtils
 
     public function object()
     {
-        return $this->error_handler(self::$results);
+        return (object)$this->error_handler(self::$results);
     }
 
     public function error_handler($results)
     {
         if(count($results)==0)
         {
-            if (self::is_debug_on())
-            {
-                echo "<br>KS:Query yield no results Count:0<br>";
-            }
-            return;
-        }
-        if (count($results) >= 1)
-        {
-            return $results[0];
+            return $results;
         }
         else
         {
-            return $results;
+            return $results[0];
+        }
+    }
+
+    protected static function execute_sql($sql):bool
+    {
+        $dbh = self::pdo();
+        try {
+            $results = $dbh->query($sql);
+            /** The Query Yield No Results */
+            if ($results->rowCount() == 0)
+            {
+                echo var_dump($results->rowCount());
+                return false;
+            }
+            return true;
+        } catch(\PDOException $e) {
+            $dbh->rollback();
+            echo "<br>PDOException : " . $e->getMessage() . "</br>";
+            return false;
         }
     }
 }
