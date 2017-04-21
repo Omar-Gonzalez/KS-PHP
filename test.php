@@ -9,7 +9,10 @@ declare(strict_types = 1);
 
 namespace KS\Model;
 
+use KS\HTML\Form\KSForm;
+
 require __DIR__ . '/ks-src/models.php';
+require __DIR__ . '/ks-src/ks-html/KSForm.php';
 
 $c = new Cat();
 $c->name = "Odin";
@@ -19,6 +22,9 @@ $c->is_fat = true;
 $c->update(445);
 
 
-echo var_dump($_SERVER);
 
 echo"<br>";
+
+$c = new Cat();
+$form = new KSForm($c);
+$form->draw();

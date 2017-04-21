@@ -13,6 +13,8 @@ namespace KS\Config;
 /**-----------------------------------------------------*
  * KS Config - Core Config
  **-----------------------------------------------------*/
+const APP_NAME = "";
+CONST APP_VERSION = "";
 const DEBUG_MODE = true;
 const TIME_ZONE = "America/Mexico_City";
 /**-----------------------------------------------------*
