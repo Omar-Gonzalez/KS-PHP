@@ -9,8 +9,6 @@ declare(strict_types = 1);
 
 namespace KS\Model;
 
-require __DIR__ . "../../ks-db/KSDB.php";
-
 /**-----------------------------------------------------*
  * - Name Space Definitions
  **-----------------------------------------------------*/
