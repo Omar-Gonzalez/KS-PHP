@@ -10,7 +10,7 @@ declare(strict_types = 1);
 
 namespace KS\DB;
 
-require __DIR__ . "../../ks-core/KSCore.php";
+require_once __DIR__ . '../../Config.php';
 
 /**-----------------------------------------------------*
  * - Name Space Definitions
@@ -18,9 +18,7 @@ require __DIR__ . "../../ks-core/KSCore.php";
 
 use const KS\Config\{DB_USER,DB_PW,HOST,DB};
 use KS\Core\KSCore;
-use KS\Core\Log\KSLog;
 use KS\DB\QU\QueryUtils;
-//use KS\Model\KSModel;
 use PDO;
 
 /**

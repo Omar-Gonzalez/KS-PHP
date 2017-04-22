@@ -7,13 +7,9 @@
  */
 declare(strict_types = 1);
 
-namespace KS\Model;
+require_once __DIR__ . '/vendor/autoload.php';
 
-use KS\Core\HTTPMethod\Method;
-use KS\HTML\Form\KSForm;
-
-require __DIR__ . '/ks-src/models.php';
-require __DIR__ . '/ks-src/ks-html/KSForm.php';
+use KS\Model\Cat;
 
 $c = new Cat();
 $c->name = "Odin";
@@ -23,13 +19,5 @@ $c->is_fat = true;
 $c->save();
 
 
-
-echo"<br>";
-
-$c = new Cat();
-
-$form = new KSForm($c,"post","collect");
-
-$form->draw();
 
 

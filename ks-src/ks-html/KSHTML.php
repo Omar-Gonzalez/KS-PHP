@@ -8,7 +8,6 @@
 
 namespace KS\HTML;
 
-require __DIR__ . "../HTMLInterface.php";
 
 abstract class KSHTML implements HTMLInterface
 {
