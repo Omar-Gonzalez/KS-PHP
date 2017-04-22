@@ -8,26 +8,31 @@
 
 namespace KS\HTML\Form;
 
-use KS\Core\KSCore;
+use KS\HTML\KSHTML;
 use KS\Model\KSModel;
 
-class KSForm extends KSCore
+class KSForm extends KSHTML
 {
     private $properties;
+    private $method;
+    private $action;
 
-    function __construct(KSModel $model)
+    function __construct(KSModel $model,string $method,string $action)
     {
         $this->properties = get_object_vars($model);
+        $this->action = $action.".php";
+        $this->method = $method;
     }
 
-    public function draw(){
-        echo "<form method='post' action=''>";
+    protected function writteHTML():string
+    {
+        $html = "<hr><form method='".$this->method."' action='".$this->action."'>";
 
         foreach ($this->properties as $key => $value) {
-
+            $html.= "<label>$key</label><br>";
             switch (gettype($value) ){
                 case "boolean":
-                    echo "
+                    $html.= "
                     <select name='".$key."'>
                         <option>TRUE</option>
                         <option>FALSE</option>
@@ -35,20 +40,23 @@ class KSForm extends KSCore
                     ";
                     break;
                 case "integer":
-                    echo "<input type='number' name='".$key."'><br>";
+                    $html.= "<input type='number' name='".$key."'><br>";
                     break;
                 case "double":
-                    echo "<input type='number' name='".$key."'><br>";
+                    $html.= "<input type='number' name='".$key."'><br>";
                     break;
                 case "string":
-                    echo "<input type='text' name='".$key."'><br>";
+                    $html.= "<input type='text' name='".$key."'><br>";
                     break;
                 default:
-                    echo "<input type='text' name='".$key."'><br>";
+                    $html.= "<input type='text' name='".$key."'><br>";
                     break;
             }
         }
 
-        echo "</form>";
+        $html.= "<br><button type='submit'>Save</button><hr>";
+        $html.= "</form>";
+
+        return $html;
     }
 }

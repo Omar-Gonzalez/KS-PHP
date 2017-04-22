@@ -33,7 +33,7 @@ class KSModel extends KSDB
     {
         $this->properties = get_object_vars($this);
         $this->table_name = self::parse_table_name(get_class($this));
-        $this->validate_table();
+        $this->validateTable();
         self::set_timezone();
     }
 
@@ -46,7 +46,7 @@ class KSModel extends KSDB
     /**-----------------------------------------------------*
      * - Query Builders
      **-----------------------------------------------------*/
-    private function sort_key_val()
+    private function sortKeVal()
     {
         $keys = "";
         $values = "";
@@ -67,7 +67,7 @@ class KSModel extends KSDB
      * - Validate Table - Wil check if table exist if not
      *   Creates a new one
      **-----------------------------------------------------*/
-    private function validate_table()
+    private function validateTable()
     {
         if ($this->table_name == "ksmodels")
         {
@@ -126,19 +126,26 @@ class KSModel extends KSDB
     /**-----------------------------------------------------*
      * - Save new row with new instance of KSModel
      **-----------------------------------------------------*/
-    public function save()
+    public function save($post = null)
     {
+        if (isset($post)){
+            echo "POST IS NOT NULL";
+           return;
+        }
+
+        echo "POST EXECUTION WASNT INTERRPUTED";
+
         $this->__construct();
 
         $sql = "
         INSERT INTO  ks.".$this->table_name." (
-            ".$this->sort_key_val()['keys']." 
+            ".$this->sortKeVal()['keys']." 
             created_at, 
             updated_at
         ) 
         VALUES 
 	    (
-            ".$this->sort_key_val()['values']."
+            ".$this->sortKeVal()['values']."
             '".date('Y-m-d h:i:sa')."', 
             '".date('Y-m-d h:i:sa')."'
 	    )
@@ -219,5 +226,14 @@ class KSModel extends KSDB
             $dbh->rollback();
             echo "<br>PDOException : " . $e->getMessage() . "</br>";
         }
+    }
+
+    /**-----------------------------------------------------*
+     * - Save _POST
+     **-----------------------------------------------------*/
+
+    private function savePost()
+    {
+        //TODO:Save post method;
     }
 }

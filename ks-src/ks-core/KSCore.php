@@ -14,8 +14,10 @@ namespace KS\Core;
  * - Library Scripts
  **-----------------------------------------------------*/
 require __DIR__ . "../../config.php";
+require __DIR__ . "../Method.php";
 require __DIR__ . "../KSLog.php";
 require __DIR__ . "../../ks-db/QueryUtils.php";
+require __DIR__ . "../../ks-html/KSHTML.php";
 
 /**-----------------------------------------------------*
  * - Name Space Declarations
@@ -23,6 +25,7 @@ require __DIR__ . "../../ks-db/QueryUtils.php";
 
 use const KS\Config\{DEBUG_MODE,TIME_ZONE};
 use KS\Core\Log\KSLog;
+use KS\Core\HTTPMethod\Method;
 
 /**
  * Class KSCore

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 namespace KS\Model;
 
+use KS\Core\HTTPMethod\Method;
 use KS\HTML\Form\KSForm;
 
 require __DIR__ . '/ks-src/models.php';
@@ -19,12 +20,16 @@ $c->name = "Odin";
 $c->age = 100;
 $c->hair_count = 1111;
 $c->is_fat = true;
-$c->update(445);
+$c->save();
 
 
 
 echo"<br>";
 
 $c = new Cat();
-$form = new KSForm($c);
+
+$form = new KSForm($c,"post","collect");
+
 $form->draw();
+
+

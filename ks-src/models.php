@@ -15,6 +15,7 @@ class Cat extends KSModel
 {
     public $name = "string"; //string
     public $age = 1; //integer
+    public $hair_count = 0.5;
     public $is_fat = true; //boolean
 }
 
