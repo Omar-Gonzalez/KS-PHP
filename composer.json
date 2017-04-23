@@ -1,10 +1,12 @@
 {
   "autoload":{
     "classmap":[
-      "ks-src/ks-core",
-      "ks-src/ks-db",
-      "ks-src/ks-html",
-      "ks-src/"
+      "src/",
+      "src/core",
+      "src/db",
+      "src/html",
+      "src/model",
+      "models/"
     ]
   }
 }

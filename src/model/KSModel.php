@@ -30,9 +30,9 @@ class KSModel extends KSDB
     function __construct()
     {
         $this->properties = get_object_vars($this);
-        $this->table_name = self::parse_table_name(get_class($this));
+        $this->table_name = self::parseTableName(get_class($this));
         $this->validateTable();
-        self::set_timezone();
+        self::setTimezone();
     }
 
     function __destruct()
@@ -117,7 +117,7 @@ class KSModel extends KSDB
                     PRIMARY KEY (id)
                 )";
 
-        $this->execute_sql($sql);
+        $this->executeSql($sql);
         self::log(KSLog::OK_NEW_TABLE);
     }
 
@@ -149,8 +149,7 @@ class KSModel extends KSDB
 	    )
         ";
 
-        if($this->execute_sql($sql))
-        {
+        if($this->executeSql($sql)) {
             self::log(KSLog::OK_NEW_ROW);
         }else{
             self::log(KSLog::F_PDO_OPERATION);
@@ -178,8 +177,7 @@ class KSModel extends KSDB
         WHERE 
             `cats`.`id` = ".$id;
 
-        if(self::execute_sql($sql))
-        {
+        if(self::executeSql($sql)) {
             self::log(KSLog::OK_UPDATED_ROW);
             return true;
         }else{
@@ -193,10 +191,9 @@ class KSModel extends KSDB
      **-----------------------------------------------------*/
     public static function delete(int $id):bool
     {
-        $table_name = self::parse_table_name(get_called_class());
+        $table_name = self::parseTableName(get_called_class());
         $sql = "DELETE FROM `ks`.`".$table_name."` WHERE `".$table_name."`.`id` = ".$id;
-        if(self::execute_sql($sql))
-        {
+        if(self::execute_sql($sql)) {
             self::log(KSLog::OK_DEL_ROW);
             return true;
         }else{
@@ -211,7 +208,7 @@ class KSModel extends KSDB
      **-----------------------------------------------------*/
     public static function find(int $id)
     {
-        $table_name = self::parse_table_name(get_called_class());
+        $table_name = self::parseTableName(get_called_class());
         $dbh = self::pdo();
         $sql = "SELECT * FROM ".$table_name." WHERE id=".$id;
 

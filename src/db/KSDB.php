@@ -43,32 +43,29 @@ abstract class KSDB extends KSCore implements QueryUtils
      **-----------------------------------------------------*/
     public function json()
     {
-        return json_encode($this->error_handler(self::$results));
+        return json_encode($this->errorHandler(self::$results));
     }
 
     public function get()
     {
-        return $this->error_handler(self::$results);
+        return $this->errorHandler(self::$results);
     }
 
     public function array()
     {
-        return $this->error_handler(self::$results);
+        return $this->errorHandler(self::$results);
     }
 
     public function object()
     {
-        return (object)$this->error_handler(self::$results);
+        return (object)$this->errorHandler(self::$results);
     }
 
-    public function error_handler($results)
+    public function errorHandler($results)
     {
-        if(count($results)==0)
-        {
+        if(count($results)==0) {
             return $results;
-        }
-        else
-        {
+        } else {
             return $results[0];
         }
     }
@@ -76,7 +73,7 @@ abstract class KSDB extends KSCore implements QueryUtils
     /**-----------------------------------------------------*
      * - PDO Execute SQL
      **-----------------------------------------------------*/
-    protected static function execute_sql($sql):bool
+    protected static function executeSql($sql):bool
     {
         $dbh = self::pdo();
         try {

@@ -2,7 +2,7 @@
 
 ## What is this?
 
-- A small PHP library I wrote for my freelance work
+- A small PHP library for web apps
 
 ## Prerequisites 
 
@@ -22,7 +22,7 @@
 
 ## Classes 
 
-#### Active Record Classes for BD Interaction
+#### KSMODEL - Active Record Classes for BD Interaction
 
 1-Extend a new model from KSModel 
 
@@ -61,6 +61,8 @@
      
      //Delete with id
      Cat::delete(1);
+     
+#### KSHMTL - Templater for HTML output
      
 [\#PHP4life Dawg!](https://twitter.com/_MinightCoffee)
 

@@ -16,5 +16,5 @@ interface QueryUtils
     public function array();
     public function object();
 
-    public function error_handler($results);
+    public function errorHandler($results);
 }

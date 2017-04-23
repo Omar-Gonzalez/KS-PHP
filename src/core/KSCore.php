@@ -28,14 +28,14 @@ abstract class KSCore
         //...
     }
 
-    static protected function set_timezone()
+    static protected function setTimezone()
     {
         date_default_timezone_set(TIME_ZONE);
     }
 
-    static protected function log(string $log){
-        if (DEBUG_MODE)
-        {
+    static protected function log(string $log)
+    {
+        if (DEBUG_MODE) {
             echo $log;
         }
     }
@@ -45,7 +45,7 @@ abstract class KSCore
         return substr(com_create_guid(), 1, -1);
     }
 
-    static protected function parse_table_name(string $class):string
+    static protected function parseTableName(string $class):string
     {
         return basename(str_replace('\\', '/', $class))."s";
     }
