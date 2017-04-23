@@ -1,12 +1,23 @@
 {
-  "autoload":{
-    "classmap":[
-      "src/",
-      "src/core",
-      "src/db",
-      "src/html",
-      "src/model",
-      "models/"
-    ]
-  }
+    "name": "kenai/ks",
+    "description": "A lightweight PHP library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Omar Gonzalez Rocha",
+            "email": "gonzalezrocha.omar@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "classmap":[
+            "src/",
+            "src/core",
+            "src/db",
+            "src/html",
+            "src/model",
+            "models/"
+        ]
+    }
 }
