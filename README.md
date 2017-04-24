@@ -88,7 +88,7 @@
      $c->name = "Odin";
      $c->age = 7;
      $c->is_fat = false;
-     $c->update();
+     $c->update(1);
      
      //Delete with id
      Cat::delete(1);

@@ -6,7 +6,7 @@
  * Time: 1:37 PM
  */
 
-namespace KS\HTML;
+namespace KS;
 
 
 interface HTMLInterface

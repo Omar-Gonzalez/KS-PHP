@@ -6,7 +6,7 @@
  * Time: 1:35 PM
  */
 
-namespace KS\HTML;
+namespace KS;
 
 
 abstract class HTML implements HTMLInterface

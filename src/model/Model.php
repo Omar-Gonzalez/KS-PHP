@@ -7,14 +7,8 @@
  */
 declare(strict_types = 1);
 
-namespace KS\Model;
+namespace KS;
 
-/**-----------------------------------------------------*
- * - Name Space Definitions
- **-----------------------------------------------------*/
-
-use KS\Core\Log\Log;
-use KS\DB\DB;
 use PDO;
 
 /**
