@@ -29,12 +29,11 @@ use PDO;
 abstract class DB extends Core implements QueryUtils
 {
     public static $results;
-    private static $tableName;
 
     /**-----------------------------------------------------*
      * - Returns new instance of PDO
      **-----------------------------------------------------*/
-    protected static function pdo():\PDO
+    public static function pdo():\PDO
     {
         return new PDO("mysql:".HOST.";dbname=".DB, DB_USER, DB_PW);
     }
