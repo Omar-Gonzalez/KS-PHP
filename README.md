@@ -34,6 +34,19 @@
 
 ## Classes 
 
+#### KS\DB - Convinience methods for DB interaction 
+
+- Execute a SQL statement, returns a PDOStatement 
+
+```php
+    DB::sql("SELECT * FROM `cats`")->fetchAll();
+```  
+- Returns a new instance of PDO with Config.php params
+
+```php
+    $pdo = DB::pdo(); 
+``` 
+
 #### KS\MODEL - Active Record Classes for BD Interaction
 
 1-Extend a new custom model from KS\Model 

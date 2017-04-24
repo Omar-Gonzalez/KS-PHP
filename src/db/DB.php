@@ -33,7 +33,7 @@ abstract class DB extends Core implements QueryUtils
     /**-----------------------------------------------------*
      * - Returns new instance of PDO
      **-----------------------------------------------------*/
-    protected static function pdo():\PDO
+    public static function pdo():\PDO
     {
         return new PDO("mysql:".HOST.";dbname=".DB, DB_USER, DB_PW);
     }
@@ -67,6 +67,23 @@ abstract class DB extends Core implements QueryUtils
             return $results;
         } else {
             return $results[0];
+        }
+    }
+
+    /**-----------------------------------------------------*
+     * - Direct SQL : Returns PDO Statement
+     **-----------------------------------------------------*/
+
+    public static function sql($sql):\PDOStatement
+    {
+        $dbh = self::pdo();
+        try {
+            $results = $dbh->query($sql);
+            return $results;
+        } catch(\PDOException $e) {
+            $dbh->rollback();
+            echo "<br>PDOException : " . $e->getMessage() . "</br>";
+            return false;
         }
     }
 
