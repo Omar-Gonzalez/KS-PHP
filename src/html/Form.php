@@ -8,16 +8,16 @@
 
 namespace KS\HTML\Form;
 
-use KS\HTML\KSHTML;
-use KS\Model\KSModel;
+use KS\HTML\HTML;
+use KS\Model\Model;
 
-class KSForm extends KSHTML
+class Form extends HTML
 {
     private $properties;
     private $method;
     private $action;
 
-    function __construct(KSModel $model,string $method,string $action)
+    function __construct(Model $model, string $method, string $action)
     {
         $this->properties = get_object_vars($model);
         $this->action = $action.".php";

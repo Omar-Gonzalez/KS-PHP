@@ -16,7 +16,7 @@
             "src/core",
             "src/db",
             "src/html",
-            "src/model",
+            "src/model"
         ]
     }
 }

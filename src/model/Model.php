@@ -13,16 +13,16 @@ namespace KS\Model;
  * - Name Space Definitions
  **-----------------------------------------------------*/
 
-use KS\Core\Log\KSLog;
-use KS\DB\KSDB;
+use KS\Core\Log\Log;
+use KS\DB\DB;
 use PDO;
 
 /**
- * Class KSModel
+ * Class Model
  * @package KS\Model
  */
 
-class KSModel extends KSDB
+class Model extends DB
 {
     private $properties = [];
     private $table_name;
@@ -118,11 +118,11 @@ class KSModel extends KSDB
                 )";
 
         $this->executeSql($sql);
-        self::log(KSLog::OK_NEW_TABLE);
+        self::log(Log::OK_NEW_TABLE);
     }
 
     /**-----------------------------------------------------*
-     * - Save new row with new instance of KSModel
+     * - Save new row with new instance of Model
      **-----------------------------------------------------*/
     public function save($post = null)
     {
@@ -147,9 +147,9 @@ class KSModel extends KSDB
         ";
 
         if($this->executeSql($sql)) {
-            self::log(KSLog::OK_NEW_ROW);
+            self::log(Log::OK_NEW_ROW);
         }else{
-            self::log(KSLog::F_PDO_OPERATION);
+            self::log(Log::F_PDO_OPERATION);
         }
     }
 
@@ -175,10 +175,10 @@ class KSModel extends KSDB
             `cats`.`id` = ".$id;
 
         if(self::executeSql($sql)) {
-            self::log(KSLog::OK_UPDATED_ROW);
+            self::log(Log::OK_UPDATED_ROW);
             return true;
         }else{
-            self::log(KSLog::F_PDO_OPERATION);
+            self::log(Log::F_PDO_OPERATION);
             return false;
         }
     }
@@ -191,17 +191,17 @@ class KSModel extends KSDB
         $table_name = self::parseTableName(get_called_class());
         $sql = "DELETE FROM `ks`.`".$table_name."` WHERE `".$table_name."`.`id` = ".$id;
         if(self::execute_sql($sql)) {
-            self::log(KSLog::OK_DEL_ROW);
+            self::log(Log::OK_DEL_ROW);
             return true;
         }else{
-            self::log(KSLog::F_PDO_OPERATION);
+            self::log(Log::F_PDO_OPERATION);
             return false;
         }
     }
 
     /**-----------------------------------------------------*
      * - Find row with ID returns new instance -> For chained
-     *   KSDB method
+     *   DB method
      **-----------------------------------------------------*/
     public static function find(int $id)
     {

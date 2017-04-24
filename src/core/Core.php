@@ -17,11 +17,11 @@ namespace KS\Core;
 use const KS\Config\{DEBUG_MODE,TIME_ZONE};
 
 /**
- * Class KSCore
+ * Class Core
  * @package KS\Core
  */
 
-abstract class KSCore
+abstract class Core
 {
     function __construct()
     {
