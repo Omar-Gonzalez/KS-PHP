@@ -127,11 +127,8 @@ class KSModel extends KSDB
     public function save($post = null)
     {
         if (isset($post)){
-            echo "POST IS NOT NULL";
            return;
         }
-
-        echo "POST EXECUTION WASNT INTERRPUTED";
 
         $this->__construct();
 

@@ -6,7 +6,7 @@
     "authors": [
         {
             "name": "Omar Gonzalez Rocha",
-            "email": "gonzalezrocha.omar@gmail.com"
+            "email": "support@kenai.io"
         }
     ],
     "require": {},
@@ -17,7 +17,6 @@
             "src/db",
             "src/html",
             "src/model",
-            "models/"
         ]
     }
 }
