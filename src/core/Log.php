@@ -11,11 +11,11 @@ declare(strict_types = 1);
 namespace KS\Core\Log;
 
 /**
- * Class KSLog
+ * Class Log
  * @package KS\Core\Log
  */
 
-class KSLog
+class Log
 {
     /**-----------------------------------------------------*
      * - Log Styles

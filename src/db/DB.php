@@ -17,16 +17,16 @@ require_once __DIR__ . '../../Config.php';
  **-----------------------------------------------------*/
 
 use const KS\Config\{DB_USER,DB_PW,HOST,DB};
-use KS\Core\KSCore;
+use KS\Core\Core;
 use KS\DB\QU\QueryUtils;
 use PDO;
 
 /**
- * Class KSDB
+ * Class DB
  * @package KS\DB
  */
 
-abstract class KSDB extends KSCore implements QueryUtils
+abstract class DB extends Core implements QueryUtils
 {
     public static $results;
 

@@ -9,7 +9,7 @@
 namespace KS\HTML;
 
 
-abstract class KSHTML implements HTMLInterface
+abstract class HTML implements HTMLInterface
 {
     /**-----------------------------------------------------*
      * - HTML Interface Methods
