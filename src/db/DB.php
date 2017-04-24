@@ -8,7 +8,7 @@
 
 declare(strict_types = 1);
 
-namespace KS\DB;
+namespace KS;
 
 require_once __DIR__ . '../../Config.php';
 
@@ -17,8 +17,6 @@ require_once __DIR__ . '../../Config.php';
  **-----------------------------------------------------*/
 
 use const KS\Config\{DB_USER,DB_PW,HOST,DB};
-use KS\Core\Core;
-use KS\DB\QU\QueryUtils;
 use PDO;
 
 /**

@@ -8,7 +8,7 @@
 
 declare(strict_types = 1);
 
-namespace KS\Core;
+namespace KS;
 
 /**-----------------------------------------------------*
  * - Name Space Declarations

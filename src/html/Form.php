@@ -8,8 +8,8 @@
 
 namespace KS\HTML\Form;
 
-use KS\HTML\HTML;
-use KS\Model\Model;
+use KS\HTML;
+use KS\Model;
 
 class Form extends HTML
 {

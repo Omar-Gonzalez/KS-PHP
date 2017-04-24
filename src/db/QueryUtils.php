@@ -6,7 +6,7 @@
  * Time: 9:17 PM
  */
 
-namespace KS\DB\QU;
+namespace KS;
 
 
 interface QueryUtils

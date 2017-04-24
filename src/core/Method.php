@@ -6,7 +6,7 @@
  * Time: 10:44 PM
  */
 
-namespace KS\Core\HTTPMethod;
+namespace KS;
 
 
 class Method
