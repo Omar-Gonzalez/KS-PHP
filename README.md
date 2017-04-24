@@ -2,13 +2,23 @@
 
 ## What is this?
 
-- A small PHP library for CRUD like apps
+#### A small PHP library for CRUD like apps
+- The main design criteria for this library was to make my life easier as a freelance web dev
+- It uses an Active record class that creates a table with given model
+- The model has convenience methods to interact with the DB records
+- HTML Output class that will build Components and Forms based on models
 
 ## Prerequisites 
 
 - PHP7
-- strict types enabled
+- Strict types enabled
 - MySQL or Maria DB
+
+## Plays nice with
+
+- Any shared host with PHP7
+- Twitter Bootstrap
+- Need REST end points? [Slim](https://www.slimframework.com/) is pretty great
 
 ## Config
 
@@ -24,14 +34,14 @@
 
 ## Classes 
 
-#### KSMODEL - Active Record Classes for BD Interaction
+#### KS\MODEL - Active Record Classes for BD Interaction
 
-1-Extend a new model from KSModel 
+1-Extend a new custom model from KS\Model 
 
 2-Assign public properties with type:
 
 ```php
-    class Cat extends KSModel
+    class Cat extends KS\Model\Model
     {
         public $name = "string"; //string
         public $age = 1; //integer
@@ -39,7 +49,7 @@
     }
 ```  
     
-3 - KSModel will automatically create a table
+3 - KS\Model will automatically create a table
 
 4 - Use chained methods to manipulate the db
 ```php
@@ -49,11 +59,12 @@
      $c->age = 6;
      $c->is_fat = true;
      $c->save();
-     //Or save with $_POST
+     
+     //Or save new record with a $_POST array
      $c->save($_POST);
      
      //Find row with id 
-     Cat::find(1)->get();
+     Cat::find(1)->get(); 
      
      //Return type json/object
      Cat::find(1)->json();
@@ -70,7 +81,7 @@
      Cat::delete(1);
 ```
      
-#### KSHMTL - Templater for HTML output
+#### KS\HMTL - for HTML output
      
 [\#PHP4life Dawg!](https://twitter.com/_MinightCoffee)
 
