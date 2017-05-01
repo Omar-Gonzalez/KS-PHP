@@ -26,6 +26,7 @@ use PDO;
 
 abstract class DB extends Core implements QueryUtils
 {
+    use PDOExecutions;
     public static $results;
 
     /**-----------------------------------------------------*
@@ -65,45 +66,6 @@ abstract class DB extends Core implements QueryUtils
             return $results;
         } else {
             return $results[0];
-        }
-    }
-
-    /**-----------------------------------------------------*
-     * - Direct SQL : Returns PDO Statement
-     **-----------------------------------------------------*/
-
-    public static function sql($sql):\PDOStatement
-    {
-        $dbh = self::pdo();
-        try {
-            $results = $dbh->query($sql);
-            return $results;
-        } catch(\PDOException $e) {
-            $dbh->rollback();
-            echo "<br>PDOException : " . $e->getMessage() . "</br>";
-            return false;
-        }
-    }
-
-    /**-----------------------------------------------------*
-     * - PDO Execute SQL
-     **-----------------------------------------------------*/
-    protected static function executeSql($sql):bool
-    {
-        $dbh = self::pdo();
-        try {
-            $results = $dbh->query($sql);
-            /** The Query Yield No Results */
-            if ($results->rowCount() == 0)
-            {
-                echo var_dump($results->rowCount());
-                return false;
-            }
-            return true;
-        } catch(\PDOException $e) {
-            $dbh->rollback();
-            echo "<br>PDOException : " . $e->getMessage() . "</br>";
-            return false;
         }
     }
 }

@@ -49,4 +49,5 @@ abstract class Core
     {
         return basename(str_replace('\\', '/', $class))."s";
     }
+
 }

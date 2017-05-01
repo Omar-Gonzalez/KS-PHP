@@ -121,7 +121,8 @@ class Model extends DB
     public function save($post = null)
     {
         if (isset($post)){
-           return;
+            $this->savePost($post);
+            return;
         }
 
         $this->__construct();
@@ -154,6 +155,7 @@ class Model extends DB
         $key_values = "";
         foreach ($this->properties as $key => $value) {
             if ($key == "properties" || $key == "table_name" || $key == "results"){
+
                 continue;
             }
             $key_values .= "`".$key."` = '".$value."',";
@@ -218,7 +220,7 @@ class Model extends DB
      * - Save _POST
      **-----------------------------------------------------*/
 
-    private function savePost()
+    private function savePost($post)
     {
         //TODO:Save post method;
     }
