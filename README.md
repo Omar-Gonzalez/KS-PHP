@@ -96,5 +96,3 @@
      
 #### KS\HMTL - for HTML output
      
-[\#PHP4life Dawg!](https://twitter.com/_MinightCoffee)
-
